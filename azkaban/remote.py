@@ -332,6 +332,48 @@ class Session(object):
       self._logger.info('Execution %s cancelled.', exec_id)
     return res
 
+  def pause_execution(self, exec_id):
+    """Pause workflow execution.
+
+    :param exec_id: Execution ID.
+
+    """
+    self._logger.debug('Pausing execution %s.', exec_id)
+    res = _extract_json(self._request(
+      method='GET',
+      endpoint='executor',
+      params={
+        'execid': exec_id,
+        'ajax': 'pauseFlow',
+      },
+    ))
+    if 'error' in res:
+      raise AzkabanError('Execution %s is not running.', exec_id)
+    else:
+      self._logger.info('Execution %s paused.', exec_id)
+    return res
+
+  def resume_execution(self, exec_id):
+    """Resume workflow execution.
+
+    :param exec_id: Execution ID.
+
+    """
+    self._logger.debug('Resuming execution %s.', exec_id)
+    res = _extract_json(self._request(
+      method='GET',
+      endpoint='executor',
+      params={
+        'execid': exec_id,
+        'ajax': 'resumeFlow',
+      },
+    ))
+    if 'error' in res:
+      raise AzkabanError('Execution %s is not running.', exec_id)
+    else:
+      self._logger.info('Execution %s resumed.', exec_id)
+    return res
+
   def get_projects(self):
     """Get a list of all projects."""
     self._logger.debug('Getting all projects')
