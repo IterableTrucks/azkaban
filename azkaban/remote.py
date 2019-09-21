@@ -337,6 +337,8 @@ class Session(object):
 
     :param exec_id: Execution ID.
 
+    Note that if an execution has already been paused, it will not return any error.
+
     """
     self._logger.debug('Pausing execution %s.', exec_id)
     res = _extract_json(self._request(
@@ -357,6 +359,8 @@ class Session(object):
     """Resume workflow execution.
 
     :param exec_id: Execution ID.
+
+    Note that if an execution has already been resumed, it will not return any errors.
 
     """
     self._logger.debug('Resuming execution %s.', exec_id)
